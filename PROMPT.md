@@ -105,3 +105,13 @@ CRUD completo sobre el recurso `tasks`:
 - Desplegar el proyecto en **Vercel**, conectado a ese repositorio, con la
   variable de entorno `VITE_API_URL` configurada en Vercel apuntando a la
   Lambda Function URL desplegada por Terraform.
+
+## 6. Estado desplegado (referencia)
+
+- Repositorio: https://github.com/RECCHIMUZZI/b1-1-4-50-aws-lambda-vite
+  (monorepo: `terraform/`, `lambda/`, `web/`).
+- Lambda Function URL: `https://bzcihi66apg3s6o5dfistz5h6m0jjsut.lambda-url.us-east-1.on.aws`
+- Tabla DynamoDB: `todo-app-tasks` (región `us-east-1`).
+- Web en producción: https://todo-app-lambda-vite.vercel.app
+- Proyecto Vercel: `miseia/todo-app-lambda-vite`, con `VITE_API_URL`
+  configurada en los entornos Production y Preview.
