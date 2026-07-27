@@ -169,17 +169,60 @@ confirmó reproduciendo el flujo con Playwright antes y después del fix.
 - Después de cada corrida de pruebas se limpiaron las tareas de prueba en
   DynamoDB para dejar la tabla vacía.
 
-## 7. Estado final desplegado
+## 7. Estado final desplegado (histórico — ver §7bis, proyecto cerrado)
 
 | Recurso | Valor |
 |---|---|
 | Repositorio GitHub | https://github.com/RECCHIMUZZI/b1-1-4-50-aws-lambda-vite |
+| Repositorio GitLab | https://gitlab.codecrypto.academy/daniel.recchimuzzi/1.4.50-aws-lambda-vite |
 | Web en producción (Vercel) | https://todo-app-lambda-vite.vercel.app |
 | Proyecto Vercel | `miseia/todo-app-lambda-vite` |
-| Lambda Function URL | https://bzcihi66apg3s6o5dfistz5h6m0jjsut.lambda-url.us-east-1.on.aws |
-| Función Lambda | `todo-app-tasks-api` (Python 3.12, `us-east-1`) |
-| Tabla DynamoDB | `todo-app-tasks` (`PAY_PER_REQUEST`) |
+| Lambda Function URL | https://bzcihi66apg3s6o5dfistz5h6m0jjsut.lambda-url.us-east-1.on.aws (destruida) |
+| Función Lambda | `todo-app-tasks-api` (Python 3.12, `us-east-1`) (destruida) |
+| Tabla DynamoDB | `todo-app-tasks` (`PAY_PER_REQUEST`) (destruida) |
 | Profile AWS usado | `prf-aws-2026` |
+
+## 7bis. Cierre del proyecto (2026-07-27)
+
+Se decidió cerrar el proyecto y dar de baja la infraestructura de AWS para
+no seguir generando recursos activos en la cuenta. Se ejecutó:
+
+```bash
+cd terraform
+terraform destroy -auto-approve
+```
+
+Resultado: **8 recursos destruidos** (tabla DynamoDB `todo-app-tasks` junto
+con todos sus datos, función Lambda `todo-app-tasks-api`, rol IAM
+`todo-app-lambda-exec` y su policy inline, el attachment de la policy de
+logs, la Function URL y sus dos permisos de invocación). Se verificó que
+la Function URL ya no responde (`403`, el recurso no existe) y que
+`terraform state list` queda vacío.
+
+**El frontend en Vercel se dejó desplegado intencionalmente** (decisión
+explícita del usuario): no genera costo al ser hosting estático, así que
+sigue disponible en https://todo-app-lambda-vite.vercel.app como
+referencia visual del resultado final, aunque ya no puede leer/crear
+tareas porque no hay backend detrás. Los repositorios de GitHub y GitLab
+también se dejaron intactos con el código completo.
+
+**Para volver a levantar todo desde cero:**
+
+```bash
+cd terraform
+terraform init      # el state local (terraform.tfstate) ya está vacío
+terraform apply -auto-approve
+# tomar el nuevo lambda_function_url y actualizarlo en:
+#   - web/.env (desarrollo local)
+#   - variable de entorno VITE_API_URL en Vercel (production y preview)
+#     vía `npx vercel env add VITE_API_URL production` (y preview), o
+#     desde el dashboard de Vercel
+# luego re-desplegar el frontend: cd web && npx vercel --prod
+```
+
+Nota: la nueva Lambda tendrá una Function URL distinta (el subdominio
+`*.lambda-url.us-east-1.on.aws` se genera al crear el recurso), así que
+hay que actualizar `VITE_API_URL` en Vercel después de cada recreación.
 
 ## 8. Posibles mejoras futuras (no implementadas, fuera de alcance actual)
 

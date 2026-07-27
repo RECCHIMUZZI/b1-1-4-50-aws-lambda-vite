@@ -1,12 +1,19 @@
 # Lista de tareas — Lambda + DynamoDB + Vite
 
+> **Proyecto cerrado (2026-07-27).** La infraestructura de AWS (Lambda,
+> DynamoDB, IAM) fue destruida con `terraform destroy -auto-approve` y ya
+> no existe. El frontend en Vercel sigue publicado como referencia estática
+> del resultado final, pero no puede leer/crear tareas porque el backend ya
+> no está desplegado. Ver §7 de [`PLAN.md`](./PLAN.md) para el detalle del
+> cierre y cómo volver a levantar todo desde cero.
+
 Aplicación de lista de tareas (to-do list) con backend serverless en AWS
 (Lambda + DynamoDB, gestionado con Terraform) y frontend en Vite + React +
 TypeScript, publicado en Vercel.
 
-- **Web en producción**: https://todo-app-lambda-vite.vercel.app
-- **API (Lambda Function URL)**: https://bzcihi66apg3s6o5dfistz5h6m0jjsut.lambda-url.us-east-1.on.aws
-- **Repositorio**: https://github.com/RECCHIMUZZI/b1-1-4-50-aws-lambda-vite
+- **Web en producción** (frontend estático, backend apagado): https://todo-app-lambda-vite.vercel.app
+- **API (Lambda Function URL)**: destruida, ya no existe
+- **Repositorio**: https://github.com/RECCHIMUZZI/b1-1-4-50-aws-lambda-vite (también en GitLab: https://gitlab.codecrypto.academy/daniel.recchimuzzi/1.4.50-aws-lambda-vite)
 
 Ver también [`PLAN.md`](./PLAN.md) para el detalle completo del proceso,
 decisiones y problemas resueltos durante la construcción, y
